@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userScema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     firstName :{
         type:String,
         required:true,
@@ -31,7 +31,7 @@ const userScema = new mongoose.Schema({
         required:true,
         ref:'Profile'
     },
-    cources:[
+    courses:[
         {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Course'
@@ -45,6 +45,5 @@ const userScema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'CourseProgress'
     },
-    
-
 })
+module.exports = mongoose.model('User',userSchema)
