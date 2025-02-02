@@ -166,7 +166,7 @@ exports.login = async (req,res)=>{
             const payload ={
                 email:user.email,
                 id:user._id,
-                role:user.role
+                accountType:user.accountType
             }
             const token = jwt.sign(payload,process.env.JWT_SECRET,{
                 expiresIn:"2h",
@@ -197,5 +197,37 @@ exports.login = async (req,res)=>{
             success:false,
             message:error.message,
         })
+    }
+}
+
+
+// change password
+exports.changePassword = async (req,res) => {
+    try {
+        const {oldPassword, newPassword, confirmNewPassword} = req.body;
+        if(!oldPassword || !newPassword || !confirmNewPassword){
+            return res.status(401).json({
+                success:false,
+                message:'All fields are required'
+            })
+        }
+
+        if(newPassword !== confirmNewPassword){
+            return res.status(401).json({
+                success:false,
+                message:'New Password and confirm new Password are not match!'
+            })
+        }
+
+
+        const user = await User.findOne({password:oldPassword})
+
+
+
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:error.message,
+        })       
     }
 }
