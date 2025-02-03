@@ -65,6 +65,8 @@ exports.deleteSection = async (req,res) => {
         
         await Section.findByIdAndDelete(sectionId);
 
+        // also need to delete from Course model
+
         return res.status(200).json({
             success:true,
             message:"Section deleted successfully"
