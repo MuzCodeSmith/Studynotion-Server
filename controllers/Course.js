@@ -91,8 +91,9 @@ exports.createCourse = async (req,res) => {
     }
 };
 
-exports.getAllCources = async (req,res) =>{
+exports.showAllCources = async (req,res) =>{
     try {
+        // change the below statement increamentally
         const allCources = await Course.find({},{
             courseName:true,
             price:true,
@@ -100,6 +101,12 @@ exports.getAllCources = async (req,res) =>{
             instructor:true,
             studentsEnrolled:true,
             ratingAndReviews:true   
+        }).populate('instructor').exec();
+
+        return res.json(200).json({
+            success:true,
+            data:allCources,
+            message:"all courses fetched successfully!"
         })
     } catch (error) {
         console.error(error)
