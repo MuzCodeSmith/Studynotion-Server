@@ -5,7 +5,7 @@ exports.createSection = async (req,res) =>{
     try {
         const {sectionName, courseId} = req.body;
         if(!sectionName || !courseId){
-            return res.json(401).json({
+            return res.status(401).json({
                 success:false,
                 message:"All fields are required"
             })
@@ -20,12 +20,12 @@ exports.createSection = async (req,res) =>{
             {new:true}
         );
 
-        return res.json(201).json({
+        return res.status(201).json({
             success:true,
             message:"Section Created successfully"
         })
     } catch (error) {
-        return res.json(500).json({
+        return res.status(500).json({
             success:false,
             message:"error while creating Section"
         })
@@ -37,7 +37,7 @@ exports.updatedCourse = async (req,res)=>{
         const {sectionName, sectionId} = req.body;
         // validation
         if(!sectionName || !sectionId){
-            return res.json(401).json({
+            return res.status(401).json({
                 success:false,
                 message:"All fields are required"
             })
@@ -45,16 +45,34 @@ exports.updatedCourse = async (req,res)=>{
         // update course
         const updatedSection = await Section.findByIdAndUpdate(sectionId, {sectionName},{new:true})
     
-        return res.json(201).json({
+        return res.status(201).json({
             success:true,
             data:updatedSection,
             message:"Section Created successfully"
         })
         
     } catch (error) {
-        return res.json(500).json({
+        return res.status(500).json({
             success:false,
             message:"error while creating Section"
         })   
+    }
+}
+
+exports.deleteSection = async (req,res) => {
+    try {
+        const {sectionId} = req.params;
+        
+        await Section.findByIdAndDelete(sectionId);
+
+        return res.status(200).json({
+            success:true,
+            message:"Section deleted successfully"
+        })  
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Section delted successfully!"
+        })  
     }
 }
