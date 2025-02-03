@@ -5,7 +5,7 @@ exports.createSection = async (req,res) =>{
     try {
         const {sectionName, courseId} = req.body;
         if(!sectionName || !courseId){
-            return res.json(500).json({
+            return res.json(401).json({
                 success:false,
                 message:"All fields are required"
             })
@@ -21,7 +21,7 @@ exports.createSection = async (req,res) =>{
         );
 
         return res.json(201).json({
-            success:false,
+            success:true,
             message:"Section Created successfully"
         })
     } catch (error) {
@@ -29,5 +29,32 @@ exports.createSection = async (req,res) =>{
             success:false,
             message:"error while creating Section"
         })
+    }
+}
+
+exports.updatedCourse = async (req,res)=>{
+    try {
+        const {sectionName, sectionId} = req.body;
+        // validation
+        if(!sectionName || !sectionId){
+            return res.json(401).json({
+                success:false,
+                message:"All fields are required"
+            })
+        }
+        // update course
+        const updatedSection = await Section.findByIdAndUpdate(sectionId, {sectionName},{new:true})
+    
+        return res.json(201).json({
+            success:true,
+            data:updatedSection,
+            message:"Section Created successfully"
+        })
+        
+    } catch (error) {
+        return res.json(500).json({
+            success:false,
+            message:"error while creating Section"
+        })   
     }
 }
