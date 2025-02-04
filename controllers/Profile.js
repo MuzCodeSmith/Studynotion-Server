@@ -42,3 +42,33 @@ exports.updateProfile = async (req,res) =>{
         })  
     }
 }
+
+exports.deleteProfile = async (req,res) =>{
+    try {
+        const userId = req.user.id;
+        // fetch user details
+        const userDetails = await User.findById(userId);
+        if(!userDetails){
+            return res.status(500).json({
+                success:false,
+                message:"user details not available"
+            })  
+        }
+        await Profile.findByIdAndDelete({_id:userDetails.additionlDetails});
+
+        // todo:if user enrolled any course also remove from their
+
+        await User.findByIdAndDelete({_id:userId});
+
+        return res.status(500).json({
+            success:true,
+            message:"User deleted successfully"
+        })  
+
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"error while deleting profile"
+        })  
+    }
+}
