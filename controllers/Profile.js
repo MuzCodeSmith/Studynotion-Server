@@ -72,3 +72,23 @@ exports.deleteProfile = async (req,res) =>{
         })  
     }
 }
+
+exports.getAllUserDetails = async (req,res) =>{
+    try {
+        const userId = req.user.id;
+        // fetch user details
+        const userDetails = await User.findById(userId).populate('additionlDetails');
+        return res.status(200).json({
+                success:true,
+                message:"profile details fetched successfully",
+                data:userDetails
+        })  
+
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"error while fetching profile details"
+        })  
+    }
+}
+
