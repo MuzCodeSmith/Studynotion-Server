@@ -39,4 +39,42 @@ exports.capturePayment = async (req,res) =>{
             message:error.message
         })  
     }
+
+    // order create
+    const ammount = course.price;
+    const currency = "INR";
+
+    const options = {
+        ammount:ammount * 100,
+        currency,
+        receipt:Math.random(Date.now()).toString(),
+        notes:{
+            courseId,
+            userId
+        }
+
+    }
+
+    try {
+        // intiate the payment using razorpay
+        const paymentResponse = await instance.orders.create(options)
+        console.log("paymentResponse:",paymentResponse)
+
+        return res.status(200).json({
+            success:true,
+            courseName:course.courseName,
+            courseDescription:course.courseDescription,
+            thumbnail:course.thumbnail,
+            orderId:paymentResponse.id,
+            currency:paymentResponse.currency,
+            ammount:paymentResponse.ammount
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:'failed to intiate order!'
+        })
+    }
 }
