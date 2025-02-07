@@ -134,6 +134,10 @@ exports.verifySignature = async (req,res) =>{
                 message:`error while signature verification: ${message.response}`
             })  
         }
-        
+    }else{
+        return res.status(500).json({
+            success:false,
+            message:"payment not authorized, invalid request"
+        })  
     }
 }
