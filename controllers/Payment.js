@@ -89,6 +89,51 @@ exports.verifySignature = async (req,res) =>{
     const digest = shasum.digest("hex");
 
     if(signature === digest){
-        console.log("Payment is Authorized")
+        console.log("Payment is Authorized");
+
+        const {courseId, userId} = req.body.payload.payment.entity.notes;
+
+        try {
+             // fulfill the action
+             const enrolledCourse = await Course.findByIdAndUpdate({_id:courseId},
+                {
+                    $push:{studentsEnrolled:userId}
+                },
+                {new:true},)
+
+                if(!enrolledCourse){
+                    return res.status(401).json({
+                        success:false,
+                        message:"course not found"
+                    })
+                }
+
+                const enrolledStudent = await User.findByIdAndUpdate({_id:userId},
+                    {
+                        $push:{courses:courseId}
+                    },
+                    {new:true});
+                console.log(enrolledStudent)
+
+                // send confirmation mail to Enrolled Student
+                const mailResponse = await mailSender(
+                    enrolledStudent.email,
+                    "Congratualtion from Muzaffar Shaikh",
+                    "Your Successfully Enrolled into the our course"
+                )
+
+                console.log(mailResponse);
+
+                return res.status(200).json({
+                    success:true,
+                    message:"Signature verified and course added successfully"
+                })
+        } catch (error) {
+            return res.status(500).json({
+                success:false,
+                message:`error while signature verification: ${message.response}`
+            })  
+        }
+        
     }
 }
