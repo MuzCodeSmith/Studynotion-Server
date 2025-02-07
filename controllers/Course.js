@@ -1,6 +1,5 @@
 // models
 const Course = require('../models/Course');
-const Tag = require('../models/Tag')
 const User = require('../models/User');
 
 // utils
@@ -114,5 +113,44 @@ exports.showAllCources = async (req,res) =>{
             success:false,
             message:"failed to fetch all cources"
         })
+    }
+}
+
+exports.getCourseDetails = async (req,res)=>{
+    try {
+        const {courseId} = req.body;
+        // find course details
+        const courseDetails = await Course.find({_id:courseId}).populate(
+                {
+                    path:"instructor",
+                    populate:{
+                        path:"additionlDetails"
+                    }
+                }
+            )
+            .populate({
+                path:"courseContent",
+                populate:{
+                    path:"subSection"
+                }
+            })
+            .populate('ratingAndReviews')
+            .populate('category')
+            .exec();
+        if(!courseDetails){
+            return res.status(200).json({
+                success:false,
+                message:`could not find the course with ${courseId}`
+            })  
+        }
+        res.status(200).json({
+            success:true,
+            message:'course details fetched successfully'
+        })  
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:`could not find the course with course`
+        })  
     }
 }
