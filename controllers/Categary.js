@@ -42,3 +42,42 @@ exports.showAllCategories = async (req,res) =>{
         })
     }
 }
+
+exports.categoryPageDetails = async (req,res) =>{
+    try {
+        const {categoryId} =req.body;
+        // fetchin category details by id
+        const selectedCategory = await Category.findById({_id:categoryId})
+                                                .populate('courses')
+                                                .exec();
+        if(!selectedCategory){
+            return res.status(404).json({
+                success:false,
+                message:`selected category details not found!`
+            })  
+        }
+        // other categories
+        const differentCategories = await Category.find({
+            _id:{$ne:categoryId},
+        })
+        .populate('courses')
+        .exec();
+
+        //get top selling courses
+
+
+        return res.status(500).json({
+            success:true,
+            data:{
+                selectedCategory,
+                differentCategories
+            }
+        })  
+
+    } catch (error) {
+        return res.json(500).json({
+            success:false,
+            message:"error while fetching Category Page Details"
+        })
+    }
+}
