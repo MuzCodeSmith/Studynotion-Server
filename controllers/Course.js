@@ -128,14 +128,14 @@ exports.getCourseDetails = async (req,res)=>{
                     }
                 }
             )
+            .populate('category')
+            .populate('ratingAndReviews')
             .populate({
                 path:"courseContent",
                 populate:{
                     path:"subSection"
                 }
             })
-            .populate('ratingAndReviews')
-            .populate('category')
             .exec();
         if(!courseDetails){
             return res.status(200).json({
