@@ -95,3 +95,33 @@ exports.getAverageRating = async (req,res) => {
         })     
     }
 }
+
+exports.getAllRating = async (req,res) =>{
+    try {
+        const allReviews = await RatingAndReview.find()
+        .sort({rating:'desc'})
+        .populate(
+            {
+                path:"user",
+                select:"firstName lastName email image"
+            }
+        ) 
+        .populate(
+            {
+                path:"course",
+                select:"coursName"
+            }) 
+        .exec(); 
+
+        return res.status(200).json({
+            success:true,
+            message:"All ratings are fetched successfully!",
+            data:allReviews
+        })  
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:`error occured while get all ratings: ${error.message}`
+        })  
+    }
+}
