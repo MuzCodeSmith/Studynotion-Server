@@ -40,7 +40,7 @@ app.use(
 app.use('/api/v1/auth',userRoutes);
 app.use('/api/v1/profile',profileRoutes);
 app.use('/api/v1/course',courseRoutes);
-// app.use('/api/v1/payment',paymentRoutes);
+app.use('/api/v1/payment',paymentRoutes);
 
 // default
 app.use('/',(req,res)=>{
