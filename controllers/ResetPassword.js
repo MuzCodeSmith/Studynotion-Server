@@ -50,9 +50,10 @@ exports.resetPassword = async (req, res) =>{
     try {
         // extracting data from request
         const {password, confirmPassword, token} = req.body;
+        console.log({password, confirmPassword, token});
         // validating data
         if(password !== confirmPassword) {
-            return res.json(401).json({
+            return res.status(401).json({
                 success:false,
                 message:"password not matching"
             })
@@ -60,20 +61,24 @@ exports.resetPassword = async (req, res) =>{
         // fetching user details using token
         const userDetails = await User.findOne({token:token});
         if(!userDetails){
-            return res.json(401).json({
+            return res.status(401).json({
                 success:false,
                 message:"token is invalid"
             })
         }
         // check token expiry
         if(userDetails.resetPasswordExpires < Date.now()){
-            return res.json(401).json({
+            return res.status(401).json({
                 success:false,
                 message:"token is expired "
             })
         }
+
+
         // hashing password
         const hashedPassword = await bcrypt.hash(password,10)
+
+        console.log(hashedPassword)
 
         // updating userdetails
         const updatedDeatails = await User.findOneAndUpdate(
@@ -82,7 +87,7 @@ exports.resetPassword = async (req, res) =>{
             {new:true}
         );
 
-        res.status(200).status({
+        return res.status(200).json({
             success:true,
             message:"Password resetted successfully"
         })
