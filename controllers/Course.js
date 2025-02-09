@@ -90,7 +90,7 @@ exports.createCourse = async (req,res) => {
     }
 };
 
-exports.showAllCources = async (req,res) =>{
+exports.getAllCourses = async (req,res) =>{
     try {
         // change the below statement increamentally
         const allCources = await Course.find({},{

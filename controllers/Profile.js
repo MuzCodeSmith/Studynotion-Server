@@ -43,7 +43,7 @@ exports.updateProfile = async (req,res) =>{
     }
 }
 
-exports.deleteProfile = async (req,res) =>{
+exports.deleteAccount = async (req,res) =>{
     try {
         const userId = req.user.id;
         // fetch user details

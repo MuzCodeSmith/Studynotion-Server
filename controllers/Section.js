@@ -32,7 +32,7 @@ exports.createSection = async (req,res) =>{
     }
 }
 
-exports.updatedCourse = async (req,res)=>{
+exports.updateSection = async (req,res)=>{
     try {
         const {sectionName, sectionId} = req.body;
         // validation

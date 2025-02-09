@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config()
 
 // otp controller
-exports.sendOTP = async (req,res) =>{
+exports.sendotp = async (req,res) =>{
     try {
         
         const {email} = req.body;
@@ -63,7 +63,7 @@ exports.sendOTP = async (req,res) =>{
 }
 
 
-expots.signUp = async (req,res) =>{
+exports.signup = async (req,res) =>{
     try {
 
         const {firstName,lastName,email,password,confirmPassword,accountType, contactNumber,otp} = req.body;
