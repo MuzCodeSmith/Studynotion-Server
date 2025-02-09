@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const mailSender = require('../utils/mailsender');
+const emailTemplate = require("../mail/templates/emailVerificationTemplate");
 
 const otpSchema = new mongoose.Schema({
     email:{
@@ -17,15 +18,18 @@ const otpSchema = new mongoose.Schema({
     }
 })
 
-async function sendVerificationEmail(email, otp){
-    try {
-        const mailResponse = await mailSender(email,"Verification Email from Muzaffar Shaikh", otp);
-        console.log("Email sent successfully", mailResponse);
-        
-    } catch (error) {
-        console.log("error occured while sending email: ",error);
-        throw error;
-    }
+async function sendVerificationEmail(email, otp) {
+	try {
+		const mailResponse = await mailSender(
+			email,
+			"Verification Email",
+			emailTemplate(otp)
+		);
+		console.log("Email sent successfully: ", mailResponse.response);
+	} catch (error) {
+		console.log("Error occurred while sending email: ", error);
+		throw error;
+	}
 }
 
 otpSchema.pre("save", async function(next){
