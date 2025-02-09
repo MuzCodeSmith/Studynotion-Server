@@ -43,12 +43,12 @@ app.use('/api/v1/course',courseRoutes);
 app.use('/api/v1/payment',paymentRoutes);
 
 // default
-app.use('/',(req,res)=>{
-    return res.json({
-        success:true,
-        message:"Your Server is Up and Running"
-    })
-})
+// app.use('/',(req,res)=>{
+//     return res.json({
+//         success:true,
+//         message:"Your Server is Up and Running"
+//     })
+// })
 
 // listen
 app.listen(PORT,()=>{
