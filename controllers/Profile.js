@@ -5,32 +5,46 @@ const { uploadImageToCloudinary } = require("../utils/imageUplaoder")
 
 exports.updateProfile = async (req,res) =>{
     try {
-        const {contactNumber,about='',dateOfBirth='',gender} = req.body;
+        const {
+            firstName = "",
+            lastName = "",
+            dateOfBirth = "",
+            about = "",
+            contactNumber = "",
+            gender = "",
+          } = req.body
 
         // get user id
         const userId = req.user.id;
 
         // validation
-        if(!contactNumber || !about || !dateOfBirth || !gender){
-            return res.status(500).json({
-                success:false,
-                message:"all field are required"
-            })  
-        }
+        // if(!contactNumber || !about || !dateOfBirth || !gender){
+        //     return res.status(500).json({
+        //         success:false,
+        //         message:"all field are required"
+        //     })  
+        // }
 
         // fetching userdetails
         const userDetails = await User.findById(userId);
+        const profileDetails = await Profile.findById(userDetails.additionalDetails)
 
-        // fetching profile details
-        const profileId = userDetails.additionlDetails;
-        const profileDetails = await Profile.findById(profileId)
+
+        // save the details in user collections
+        const user = await User.findByIdAndUpdate(userId, {
+            firstName,
+            lastName,
+          })
+        // await user.save()
+        console.log("user:",user)
+
         profileDetails.contactNumber = contactNumber;
         profileDetails.about = about;
         profileDetails.dateOfBirth = dateOfBirth;
         profileDetails.gender = gender;
-        await profileDetails.save()
+         await profileDetails.save()
 
-        return res.status(500).json({
+        return res.status(200).json({
             success:true,
             message:"profie updated successfully",
             data:profileDetails
@@ -109,6 +123,9 @@ exports.updateDisplayPicture = async (req, res) => {
         { image: image.secure_url },
         { new: true }
       )
+
+      console.log("updatedProfile: ",updatedProfile)
+
       res.send({
         success: true,
         message: `Image Updated successfully`,
