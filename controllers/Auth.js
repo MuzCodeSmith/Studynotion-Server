@@ -12,7 +12,6 @@ require('dotenv').config()
 // otp controller
 exports.sendotp = async (req,res) =>{
     try {
-        
         const {email} = req.body;
 
         let isUserPresent = await User.findOne({email});
@@ -30,7 +29,6 @@ exports.sendotp = async (req,res) =>{
             lowerCaseAlphabets:false,
             specialChars:false
         })
-        console.log("generated otp: ",otp);
 
         // check if otp is unique or not
         let isNotUniqueOTP = await OTP.findOne({otp:otp});
@@ -41,13 +39,12 @@ exports.sendotp = async (req,res) =>{
                 lowerCaseAlphabets:false,
                 specialChars:false
             })
-            isNotUniqueOTP = await OTP.findOne({otp:otp});
+            // isNotUniqueOTP = await OTP.findOne({otp:otp});
         }
 
         const otpPayload = {email,otp};
 
         const otpBody = await OTP.create(otpPayload);
-        console.log("otpBody:",otpBody)
 
         res.status(201).json({
             success:true,
@@ -65,7 +62,6 @@ exports.sendotp = async (req,res) =>{
 
 exports.signup = async (req,res) =>{
     try {
-
         const {firstName,lastName,email,password,confirmPassword,accountType, contactNumber,otp} = req.body;
 
         // validating 
@@ -95,8 +91,7 @@ exports.signup = async (req,res) =>{
         }
 
         // find most recent otp for user
-        let recentOTP = await OTP.find({email}).sort({createdAt:-1}).limit(1);
-        console.log("recentOTP:",recentOTP)
+        let recentOTP = await OTP.findOne({email}).sort({createdAt:-1}).limit(1);
         if(recentOTP.length == 0){
             // otp not found
             return res.status(400).json({
@@ -128,7 +123,6 @@ exports.signup = async (req,res) =>{
             additionalDetails:profileDetails._id,
             image:`https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
         })
-
         res.status(201).json({
             success:true,
             Message:"User created Successfully",
