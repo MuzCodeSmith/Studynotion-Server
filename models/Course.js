@@ -39,18 +39,22 @@ const courseSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Category',
     },
-    studentsEnrolled:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+    studentsEnrolled: {
+        type: [mongoose.Schema.Types.ObjectId],  // Array of User IDs
+        ref: 'User',
+        default: []  // Default to empty array
     },
     instructions:{
         type:[String],
     },
-    status:{
-        type:String,
-        enum:["Draft","Published"]
-    },
+    status: {
+		type: String,
+		enum: ["Draft", "Published"],
+	},
+	createdAt: {
+		type:Date,
+		default:Date.now
+	},
 
 
 
