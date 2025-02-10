@@ -13,19 +13,23 @@ exports.createCourse = async (req,res) => {
         
         const thumbnail = req.files.thumbnailImage;
 
+        console.log("reached here")
+        
+
         if(!courseName || !courseDescription || !price || !whatYouWillLearn || !tag || !thumbnail ){
-            return res.json(401).json({
+            return res.status(401).json({
                 success:true,
                 message:"All fields are required"
             })
         }
+
 
         // check for instructor
         let userId = req.user.id
         let instructorDetails = await User.findById(userId);
         
         if(!instructorDetails){
-            return res.json(400).json({
+            return res.status(400).json({
                 success:false,
                 message:"Instructor details not found!"
             })
@@ -34,7 +38,7 @@ exports.createCourse = async (req,res) => {
         // check if tag valid or not
         let tagDetails = await Tag.findById(tag);
         if(tagDetails){
-            return res.json(400).json({
+            return res.status(400).json({
                 success:false,
                 message:"tag details not found!"
             })
@@ -75,7 +79,7 @@ exports.createCourse = async (req,res) => {
             }
         )
 
-        return res.json(201).json({
+        return res.status(201).json({
             success:true,
             message:"Course created successfully!",
             data:newCourse
@@ -83,7 +87,7 @@ exports.createCourse = async (req,res) => {
 
     } catch (error) {
         console.error(error);
-        return res.json(401).json({
+        return res.status(401).json({
                 success:false,
                 message:"error while creating course"
             })
@@ -102,14 +106,14 @@ exports.getAllCourses = async (req,res) =>{
             ratingAndReviews:true   
         }).populate('instructor').exec();
 
-        return res.json(200).json({
+        return res.status(200).json({
             success:true,
             data:allCources,
             message:"all courses fetched successfully!"
         })
     } catch (error) {
         console.error(error)
-        return res.json(500).json({
+        return res.status(500).json({
             success:false,
             message:"failed to fetch all cources"
         })
