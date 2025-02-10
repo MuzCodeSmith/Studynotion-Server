@@ -32,7 +32,7 @@ exports.showAllCategories = async (req,res) =>{
         const allCategories = await Category.find({},{name:true,description:true});
         return res.status(200).json({
             success:true,
-            tags:allCategories,
+            allCategories:allCategories,
             message:"All Categories fetched successfully"
         })
     } catch (error) {
