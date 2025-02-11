@@ -18,11 +18,22 @@ exports.createSection = async (req,res) =>{
                $push:{courseContent:newSection._id} 
             },
             {new:true}
-        );
+        ).populate({
+            path: "courseContent",
+            populate: {
+                path: "subSection",
+            },
+        })
+        .exec();
+
+        console.log("updatedCourse: ",updatedCourse)
+
+
 
         return res.status(201).json({
             success:true,
-            message:"Section Created successfully"
+            message:"Section Created successfully",
+            updatedCourse
         })
     } catch (error) {
         return res.status(500).json({
