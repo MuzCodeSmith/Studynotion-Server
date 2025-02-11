@@ -62,6 +62,9 @@ exports.updateProfile = async (req,res) =>{
 exports.deleteAccount = async (req,res) =>{
     try {
         const userId = req.user.id;
+
+        console.log("userId:",userId)
+
         // fetch user details
         const userDetails = await User.findById(userId);
         if(!userDetails){
@@ -70,7 +73,7 @@ exports.deleteAccount = async (req,res) =>{
                 message:"user details not available"
             })  
         }
-        await Profile.findByIdAndDelete({_id:userDetails.additionlDetails});
+        await Profile.findByIdAndDelete({_id:userDetails.additionalDetails});
 
         // todo:if user enrolled any course also remove from their
 
