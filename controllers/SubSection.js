@@ -29,7 +29,7 @@ exports.createSubSection = async (req,res) =>{
                     $push:{subSection:subSectionDetails._id}
                 },
                 {new:true}
-            )
+            ).populate("subSection")
             
         // add populat query
         return res.status(200).json({
