@@ -32,7 +32,7 @@ exports.createSubSection = async (req,res) =>{
             )
             
         // add populat query
-        return res.status(500).json({
+        return res.status(200).json({
             success:true,
             message:"created Section successfully",
             updatedSection
