@@ -36,7 +36,6 @@ exports.updateProfile = async (req,res) =>{
             lastName,
           })
         // await user.save()
-        console.log("user:",user)
 
         profileDetails.contactNumber = contactNumber;
         profileDetails.about = about;
@@ -63,7 +62,6 @@ exports.deleteAccount = async (req,res) =>{
     try {
         const userId = req.user.id;
 
-        console.log("userId:",userId)
 
         // fetch user details
         const userDetails = await User.findById(userId);
@@ -121,14 +119,12 @@ exports.updateDisplayPicture = async (req, res) => {
         1000,
         1000
       )
-      console.log(image)
       const updatedProfile = await User.findByIdAndUpdate(
         { _id: userId },
         { image: image.secure_url },
         { new: true }
       )
 
-      console.log("updatedProfile: ",updatedProfile)
 
       res.send({
         success: true,
