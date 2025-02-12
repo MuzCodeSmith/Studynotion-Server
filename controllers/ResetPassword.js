@@ -50,7 +50,6 @@ exports.resetPassword = async (req, res) =>{
     try {
         // extracting data from request
         const {password, confirmPassword, token} = req.body;
-        console.log({password, confirmPassword, token});
         // validating data
         if(password !== confirmPassword) {
             return res.status(401).json({
@@ -78,7 +77,6 @@ exports.resetPassword = async (req, res) =>{
         // hashing password
         const hashedPassword = await bcrypt.hash(password,10)
 
-        console.log(hashedPassword)
 
         // updating userdetails
         const updatedDeatails = await User.findOneAndUpdate(
