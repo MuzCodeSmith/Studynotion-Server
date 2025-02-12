@@ -58,7 +58,6 @@ exports.capturePayment = async (req,res) =>{
     try {
         // intiate the payment using razorpay
         const paymentResponse = await instance.orders.create(options)
-        console.log("paymentResponse:",paymentResponse)
 
         return res.status(200).json({
             success:true,
@@ -89,7 +88,6 @@ exports.verifyPayment = async (req,res) =>{
     const digest = shasum.digest("hex");
 
     if(signature === digest){
-        console.log("Payment is Authorized");
 
         const {courseId, userId} = req.body.payload.payment.entity.notes;
 
@@ -113,7 +111,6 @@ exports.verifyPayment = async (req,res) =>{
                         $push:{courses:courseId}
                     },
                     {new:true});
-                console.log(enrolledStudent)
 
                 // send confirmation mail to Enrolled Student
                 const mailResponse = await mailSender(
