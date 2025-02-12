@@ -75,7 +75,6 @@ exports.createCourse = async (req,res) => {
             thumbnail,
             process.env.FOLDER_NAME
         )
-        console.log(thumbnailImage)
 
 
       // Create a new course with the given details
@@ -92,7 +91,6 @@ exports.createCourse = async (req,res) => {
         instructions,
         })
 
-        console.log("newCourse: ",newCourse)
 
           // Add the new course to the User Schema of the Instructor
         await User.findByIdAndUpdate(
@@ -119,7 +117,6 @@ exports.createCourse = async (req,res) => {
         )
         
 
-        console.log("HEREEEEEEEE", categoryDetails2)
 
          // Return the new course and a success message
         res.status(200).json({
