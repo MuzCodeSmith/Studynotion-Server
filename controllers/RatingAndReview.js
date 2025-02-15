@@ -41,7 +41,6 @@ exports.createRating = async (req, res) => {
                 $push: { ratingAndReviews: ratingReview._id }
             },
             { new: true });
-        console.log(updatedCourse)
         return res.status(200).json({
             success: true,
             message: `review and rating added successfully`,

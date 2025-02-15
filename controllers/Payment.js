@@ -119,7 +119,6 @@ exports.verifyPayment = async (req,res) =>{
                     "Your Successfully Enrolled into the our course"
                 )
 
-                console.log(mailResponse);
 
                 return res.status(200).json({
                     success:true,
